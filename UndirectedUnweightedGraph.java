@@ -53,6 +53,7 @@ public class UndirectedUnweightedGraph {
         int e = s.nextInt();
         graph.addVertices(v);
         graph.addEdge(e);
+        System.out.println("The adjacency list of the graph is : " );
         graph.print();
         s.close();
     }
