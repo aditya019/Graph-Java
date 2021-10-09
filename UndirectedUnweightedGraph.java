@@ -47,8 +47,12 @@ public class UndirectedUnweightedGraph {
 
     public static void main(String[] args) {
         UndirectedUnweightedGraph graph = new UndirectedUnweightedGraph();
-        graph.addVertices(5);
-        graph.addEdge(5);
+        System.out.println("Enter the number of vertices :");
+        int v = s.nextInt();
+        System.out.println("Enter the number of edges : ");
+        int e = s.nextInt();
+        graph.addVertices(v);
+        graph.addEdge(e);
         graph.print();
         s.close();
     }
