@@ -1,10 +1,11 @@
-package Graph;
-
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.Stack;
 
 public class UndirectedUnweightedGraph {
     private HashMap<Integer, List<Integer>> adj;
@@ -33,6 +34,77 @@ public class UndirectedUnweightedGraph {
         adj.get(d).add(s);
     }
 
+    public void bfs(int s) {
+        HashSet<Integer> visited = new HashSet<>();
+        Queue<Integer> q = new LinkedList<>();
+        q.add(s);
+        System.out.println("Bfs traversal from" + s + " is :");
+        while(q.isEmpty() != true) {
+            int node = q.poll();
+            System.out.print(node + " ");
+            visited.add(node);
+            List<Integer> l = adj.get(node);
+            for(int i: l) {
+                if(visited.contains(i) == false && q.contains(i) == false) q.add(i);
+            }
+        }
+        System.out.println();
+    }
+
+    public void dfs(int s) {
+        HashSet<Integer> visited = new HashSet<>();
+        Stack<Integer> stack = new Stack<>();
+        stack.push(s);
+        System.out.println("DFS Traversal from "+s+" is:");
+        while(stack.empty() != true) {
+            int node = stack.pop();
+            System.out.print(node + " ");
+            visited.add(node);
+            List<Integer> l = adj.get(node);
+            for(int i: l) {
+                if(visited.contains(i) == false && stack.contains(i) == false) stack.push(i);
+            }
+        }
+        System.out.println();
+    }
+
+    public void shortestPath(int source, int destination) {
+        if(adj.containsKey(destination) == false ) {
+            System.out.println("Graph does not contain dextination");
+            return;
+        }
+        HashMap<Integer, Integer> h = new HashMap<>();
+        Queue<Integer> q = new LinkedList<>();
+        int path = 0;
+        q.add(source);
+        h.put(source, -1);
+        boolean flag = false;
+        while(q.isEmpty() != true) {
+            int node = q.poll();
+            List<Integer> l = adj.get(node);
+            for(int i: l) {
+                if(h.containsKey(i) == false) h.put(i, node);
+                if(q.contains(i) == false) q.add(i);
+                if(i == destination) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+        int s = h.get(destination);
+        System.out.println("Shortest Path is : ");
+        System.out.print(destination + " -> ");
+        while(true) {
+            System.out.print(s + " -> ");
+            path++;
+            if(s == source) break;
+            s = h.get(s);
+        }
+        System.out.println();
+        System.out.println("Length of shortest path = : " + path);
+    }
+
     public void print() {
         Set<Integer> set = adj.keySet();
         for(int i: set) {
@@ -53,8 +125,18 @@ public class UndirectedUnweightedGraph {
         int e = s.nextInt();
         graph.addVertices(v);
         graph.addEdge(e);
-        System.out.println("The adjacency list of the graph is : " );
+        System.out.println("The adjecency list of the graph is : ");
         graph.print();
+        System.out.println("Enter the node at which the bfs starts : ");
+        int node = s.nextInt();
+        graph.bfs(node);
+        System.out.println("Enter the node at which the dfs starts : ");
+        node = s.nextInt();
+        graph.dfs(node);
+        System.out.println("Enter the source and destination to find the shorted path between them");
+        int source = s.nextInt();
+        int destination = s.nextInt();
+        graph.shortestPath(source, destination);
         s.close();
     }
 }
